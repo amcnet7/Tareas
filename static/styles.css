@@ -1,0 +1,25 @@
+body {
+    background: #f4f7fb;
+    color: #20262d;
+}
+
+header.navbar {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.card {
+    border: none;
+    border-radius: 1rem;
+}
+
+.card-title {
+    font-size: 1.5rem;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+}
+
+.alert {
+    border-radius: 0.75rem;
+}

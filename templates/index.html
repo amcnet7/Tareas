@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Facturas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <header class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">Buscador de Facturas</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Reportes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Configuración</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Usuario</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <main class="container py-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title mb-4">Buscar RFC en facturas</h2>
+
+                <form method="post" novalidate>
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-7">
+                            <label class="form-label">Ruta de carpeta:</label>
+                            <input type="text" name="carpeta" class="form-control" placeholder="C:\\Usuarios\\Documentos\\Facturas\\" value="{{ carpeta|e }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">RFC a buscar:</label>
+                            <input type="text" name="rfc" class="form-control" placeholder="ABC123456T78" value="{{ rfc|e }}">
+                        </div>
+                        <div class="col-md-2 d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Buscar</button>
+                        </div>
+                    </div>
+                </form>
+
+                {% if error %}
+                    <div class="alert alert-danger mt-4">{{ error }}</div>
+                {% endif %}
+                {% if mensaje and not error %}
+                    <div class="alert alert-warning mt-4">{{ mensaje }}</div>
+                {% endif %}
+
+                {% if resultados %}
+                    <div class="mt-4">
+                        <h5>Resultados de la búsqueda para RFC: <span class="text-primary">{{ rfc|e }}</span></h5>
+                        <div class="table-responsive mt-3">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-secondary">
+                                    <tr>
+                                        <th>Archivo</th>
+                                        <th>Fecha de emisión</th>
+                                        <th>Importe</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for fila in resultados %}
+                                        <tr>
+                                            <td><strong>{{ fila.archivo }}</strong><br><small class="text-muted">{{ fila.ruta }}</small></td>
+                                            <td>{{ fila.fecha_emision }}</td>
+                                            <td>{{ fila.importe }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if not pdf_support %}
+                    <div class="alert alert-info mt-4">
+                        Nota: la extracción de archivos PDF requiere instalar <strong>PyPDF2</strong>.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+</body>
+</html>
